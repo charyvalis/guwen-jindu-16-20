@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>古文今讀 16–20 課　虛字整理與選擇題</title>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1f2a1f; --muted: #6b7280; --accent: #385723; --accent-bg: #e2efda;
+    --line: #a6a6a6; --row: #f7f7f7; --hl: #c00000; --blue: #ddebf7; --orange: #fce4d6;
+    --ok: #2e7d32; --ok-bg: #e3f2e1; --bad: #c62828; --bad-bg: #fdeaea;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161a16; --fg: #e8ece8; --muted: #9aa39a; --accent: #a9d18e; --accent-bg: #253323;
+      --line: #4a544a; --row: #1e241e; --hl: #ff8a80; --blue: #1f3040; --orange: #40291f;
+      --ok: #81c784; --ok-bg: #1f3a21; --bad: #ef9a9a; --bad-bg: #3f2222;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: "DFKai-SB", "BiauKai", "標楷體", "Noto Serif TC", "Songti TC", serif;
+    font-size: 17px; line-height: 1.7;
+  }
+  main { max-width: 860px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { text-align: center; color: var(--accent); font-size: 1.9rem; margin: 8px 0 2px; }
+  .subtitle { text-align: center; font-size: 1.35rem; font-weight: bold; margin: 0 0 6px; }
+  .lessons-line, .legend { text-align: center; color: var(--muted); font-size: .85rem; margin: 2px 0; }
+  nav.toc { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 14px 0 6px; }
+  nav.toc a {
+    text-decoration: none; color: var(--accent); background: var(--accent-bg);
+    padding: 4px 12px; border-radius: 999px; font-size: .9rem;
+  }
+  h2 {
+    color: var(--accent); font-size: 1.45rem; margin: 28px 0 10px; padding-bottom: 2px;
+    border-bottom: 2px solid #548235; scroll-margin-top: 12px;
+  }
+  h3 { font-size: 1.1rem; margin: 16px 0 6px; }
+  h3.lesson { background: var(--accent-bg); color: var(--accent); padding: 4px 10px; border-radius: 4px; margin-top: 22px; }
+  h3.lesson small { font-weight: normal; color: var(--muted); font-size: .8rem; }
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid var(--line); padding: 5px 10px; vertical-align: middle; }
+  table.meaning thead th { background: var(--accent-bg); text-align: center; font-size: .95rem; }
+  table.meaning.blue thead th { background: var(--blue); }
+  table.meaning.orange thead th { background: var(--orange); }
+  table.meaning tbody th { background: var(--row); width: 9.5em; text-align: center; font-size: .95rem; white-space: nowrap; }
+  .ex { font-size: .98rem; padding: 1px 0; }
+  .src { color: var(--muted); font-size: .75rem; margin-left: .3em; }
+  .hl { color: var(--hl); font-weight: bold; }
+  .note { font-size: .95rem; margin: 8px 0; }
+  .infoline { text-align: center; margin: 6px 0 10px; }
+  .printonly { display: none; }
+  .bar {
+    position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+    background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 0; margin: 10px 0 0;
+    font-family: system-ui, -apple-system, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; font-size: .88rem;
+  }
+  .bar .modes { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .bar button { font: inherit; color: var(--fg); background: var(--bg); border: 0; padding: 6px 12px; cursor: pointer; }
+  .bar .seg.on { background: var(--accent); color: var(--bg); }
+  .bar .stats { flex: 1 1 auto; min-width: 9em; }
+  .bar .acts { display: inline-flex; gap: 6px; }
+  .bar .act { border: 1px solid var(--line); border-radius: 8px; }
+  .bar .act#submit { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .bar button:focus-visible, button.opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.opt {
+    width: 100%; text-align: left; font: inherit; color: inherit; background: transparent; cursor: pointer;
+    border: 1px solid transparent; border-radius: 8px; padding: 3px 8px; margin: 1px 0; line-height: 1.6;
+  }
+  button.opt:hover { background: var(--accent-bg); }
+  button.opt.sel { background: var(--accent-bg); border-color: var(--accent); }
+  button.opt.right { background: var(--ok-bg); border-color: var(--ok); }
+  button.opt.wrong { background: var(--bad-bg); border-color: var(--bad); }
+  button.opt .mark { margin-left: .4em; font-weight: bold; font-family: system-ui, sans-serif; }
+  button.opt.right .mark { color: var(--ok); }
+  button.opt.wrong .mark { color: var(--bad); }
+  li.q.done button.opt { cursor: default; }
+  li.q.done button.opt:hover:not(.right):not(.wrong) { background: transparent; }
+  .exp { margin: 4px 0 0 2.4em; padding: 6px 10px; border-radius: 8px; background: var(--row); font-size: .93rem; line-height: 1.6; }
+  .exp .res { margin-right: .5em; font-family: system-ui, -apple-system, "Noto Sans TC", sans-serif; }
+  .exp.ok .res { color: var(--ok); }
+  .exp.no .res { color: var(--bad); }
+  .sec-score { font-family: system-ui, -apple-system, "Noto Sans TC", sans-serif; font-size: .9rem; color: var(--muted); margin: 4px 0 0; }
+
+  .rule { font-weight: bold; margin: 8px 0; }
+  ol.qs { list-style: none; counter-reset: q; padding: 0; margin: 0; }
+  li.q { counter-increment: q; margin: 10px 0 14px; break-inside: avoid; page-break-inside: avoid; }
+  li.q .stem::before { content: "（　　）" counter(q) ". "; white-space: pre; }
+  li.q .stem { padding-left: 0; }
+  ul.opts { list-style: none; margin: 2px 0 0 2.4em; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 1em; }
+  ul.opts.one { grid-template-columns: 1fr; }
+  ul.opts .lab { margin-right: .2em; }
+  u { text-underline-offset: 3px; }
+  details.answers { margin-top: 10px; border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; }
+  details.answers > summary { cursor: pointer; font-weight: bold; color: var(--accent); font-size: 1.05rem; padding: 4px 0; }
+  table.key thead th { background: var(--accent-bg); }
+  table.key td.c { text-align: center; white-space: nowrap; }
+  table.key td.ans { color: var(--hl); font-weight: bold; }
+  table.key { font-size: .95rem; }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 36px; }
+  @media (max-width: 560px) {
+    body { font-size: 16px; }
+    ul.opts { grid-template-columns: 1fr; margin-left: 1.6em; }
+    .exp { margin-left: 1.6em; }
+    .bar .stats { flex-basis: 100%; order: 3; }
+    table.meaning tbody th { width: 6.5em; white-space: normal; }
+  }
+  @media print {
+    body { font-size: 12pt; }
+    main { max-width: none; padding: 0; }
+    nav.toc, .bar, .exp, .sec-score { display: none !important; }
+    .printonly { display: block; }
+    button.opt { border: 0; padding: 0; }
+    h2.newpage { page-break-before: always; }
+    h2, h3 { page-break-after: avoid; }
+    tr { page-break-inside: avoid; }
+    .tablewrap { overflow: visible; }
+    details.answers { border: none; padding: 0; }
+  }
+
+  .poem { text-align: center; margin: 8px 0 12px; font-size: 1.15rem; line-height: 1.9; }
+  .poem p { margin: 0; }
+  .poem .hl { font-size: 1.5rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>古文今讀 第 16–20 課</h1>
+  <p class="subtitle">虛字整理：吾予余愚某僕、之、於、舉、副詞、連詞、以、時間詞、語末助詞、動詞</p>
+  <p class="lessons-line">第16課 曾參殺人　第17課 鼠畫逼真　第18課 嗜魚弗受　第19課 兄弟爭雁　第20課 顧況戲白居易</p>
+  <p class="legend">出處：簡報＝老師簡報例句；課本標註＝課本旁註所列；補充＝整理時另加的用法</p>
+  <p class="legend">互動版（可直接點選作答）｜<a href="static.html">前往講義版（可列印）</a></p>
+  <nav class="toc" aria-label="目錄">
+    <a href="#handout">虛字整理</a>
+    <a href="#notes">各課重點</a>
+    <a href="#extra">補充</a>
+    <a href="#practice">虛字練習</a>
+    <a href="#lessonqs">課文選擇題</a>
+    <a href="#answers">參考答案</a>
+  </nav>
+  <div class="bar" id="bar" role="region" aria-label="作答控制">
+    <div class="modes" role="group" aria-label="作答模式">
+      <button type="button" id="m-practice" class="seg on" aria-pressed="true">即時對答案</button>
+      <button type="button" id="m-test" class="seg" aria-pressed="false">交卷模式</button>
+    </div>
+    <div class="stats" id="stats" aria-live="polite">已作答 0／45　答對 0</div>
+    <div class="acts">
+      <button type="button" id="submit" class="act" hidden>交卷</button>
+      <button type="button" id="reset" class="act">重新作答</button>
+    </div>
+  </div>
+  <section id="handout">
+    <h2>一、吾、予、余、愚、某、僕、老夫（我）</h2>
+    <div class="tablewrap"><table class="meaning ">
+<thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">我，代詞</th><td><div class="ex"><span class="hl">「吾」</span>子不殺人<span class="src">（第16課，課本標註）</span></div></td></tr><tr><th scope="row">老年男子的自稱，代詞</th><td><div class="ex"><span class="hl">「老夫」</span>前言戲之耳<span class="src">（第20課，注釋⑦）</span></div></td></tr>
+</tbody></table></div>
+    <p class="note">予＝余＝吾，都是「我」的意思；愚＝某＝僕，是自謙的說法（課本標註）。</p>
+    <h2>二、之</h2>
+    <div class="tablewrap"><table class="meaning orange">
+<thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">助詞，的</th><td><div class="ex">曾子<span class="hl">「之」</span>母曰<span class="src">（第16課，課本標註）</span></div><div class="ex">有下人<span class="hl">「之」</span>色<span class="src">（第18課，課本標註）</span></div></td></tr><tr><th scope="row">代詞，指軸掉落這件事</th><td><div class="ex">令怪<span class="hl">「之」</span><span class="src">（第17課，課本標註）</span></div></td></tr><tr><th scope="row">代詞，指掛畫的地方</th><td><div class="ex">旦而過<span class="hl">「之」</span><span class="src">（第17課，課本標註）</span></div></td></tr><tr><th scope="row">代詞，指軸（畫）</th><td><div class="ex">則跳踉逐<span class="hl">「之」</span><span class="src">（第17課，課本標註）</span></div></td></tr><tr><th scope="row">代詞，指鼠畫</th><td><div class="ex">作鼠一軸，獻<span class="hl">「之」</span>邑令<span class="src">（第17課，補充）</span></div></td></tr><tr><th scope="row">代詞，指公孫儀</th><td><div class="ex">一國盡爭買魚而獻<span class="hl">「之」</span><span class="src">（第18課，課本標註）</span></div></td></tr><tr><th scope="row">代詞，指雁</th><td><div class="ex">將援弓射<span class="hl">「之」</span><span class="src">（第19課，課本標註）</span></div></td></tr><tr><th scope="row">代詞，指白居易</th><td><div class="ex">況謔<span class="hl">「之」</span>曰<span class="src">（第20課，課本標註）</span></div><div class="ex">老夫前言戲<span class="hl">「之」</span>耳<span class="src">（第20課，補充）</span></div></td></tr>
+</tbody></table></div>
+    <p class="note">「之」是助詞時，多翻成「的」；是代詞時，要依上下文找出它指的人、事、物。</p>
+    <h2>三、於</h2>
+    <div class="tablewrap"><table class="meaning blue">
+<thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">向</th><td><div class="ex">竟鬥而訟<span class="hl">「於」</span>社伯<span class="src">（第19課，補充）</span></div></td></tr><tr><th scope="row">在</th><td><div class="ex">漫懸<span class="hl">「於」</span>壁<span class="src">（第17課，課本標註）</span></div></td></tr><tr><th scope="row">比</th><td><div class="ex">苛政猛<span class="hl">「於」</span>虎<span class="src">（第18課，課本標註）</span></div></td></tr><tr><th scope="row">給</th><td><div class="ex">己所不欲，勿施<span class="hl">「於」</span>人<span class="src">（第18課，課本標註）</span></div></td></tr><tr><th scope="row">被，置於動詞之後，表示被動</th><td><div class="ex">則免<span class="hl">「於」</span>相<span class="src">（第18課，注釋⑨、課本標註）</span></div><div class="ex">則枉<span class="hl">「於」</span>法；枉<span class="hl">「於」</span>法<span class="src">（第18課，課本標註）</span></div></td></tr><tr><th scope="row">於是，連詞（這時候）</th><td><div class="ex"><span class="hl">「於是」</span>始知其畫為逼真<span class="src">（第17課，補充）</span></div></td></tr>
+</tbody></table></div>
+    <p class="note">「於」的常見用法：1.對於　2.向　3.在　4.比　5.給　6.被（置於動詞之後，表示被動）（課本標註）。免於相＝被罷免宰相之位。</p>
+    <h2>四、舉</h2>
+    <div class="tablewrap"><table class="meaning ">
+<thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">拿起、提起，動詞</th><td><div class="ex">逮<span class="hl">「舉」</span>軸<span class="src">（第17課，補充）</span></div></td></tr><tr><th scope="row">興起、發動，動詞</th><td><div class="ex"><span class="hl">「舉」</span>義；百廢待<span class="hl">「舉」</span><span class="src">（第20課，課本標註）</span></div></td></tr><tr><th scope="row">全部的、整個的，形容詞</th><td><div class="ex">一國盡爭買魚（＝<span class="hl">「舉」</span>國：全國）<span class="src">（第18課，課本標註）</span></div><div class="ex"><span class="hl">「舉」</span>國上下、<span class="hl">「舉」</span>世公認、<span class="hl">「舉」</span>國歡騰<span class="src">（第20課，課本標註）</span></div></td></tr><tr><th scope="row">考中舉人，動詞</th><td><div class="ex">白樂天初<span class="hl">「舉」</span><span class="src">（第20課，注釋②、課本標註）</span></div></td></tr>
+</tbody></table></div>
+    <h2>五、副詞：漫、屢、必、盡、尚、竟、初、長</h2>
+    <div class="tablewrap"><table class="meaning blue">
+<thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">隨便、漫不經心地，副詞</th><td><div class="ex"><span class="hl">「漫」</span>懸於壁<span class="src">（第17課，注釋⑥、課本標註）</span></div></td></tr><tr><th scope="row">每每、總是，副詞</th><td><div class="ex"><span class="hl">「屢」</span>懸<span class="hl">「屢」</span>墜<span class="src">（第17課，課本標註）</span></div></td></tr><tr><th scope="row">一定、總是，副詞</th><td><div class="ex">軸<span class="hl">「必」</span>墜地<span class="src">（第17課，補充）</span></div></td></tr><tr><th scope="row">全、都，副詞</th><td><div class="ex">一國<span class="hl">「盡」</span>爭買魚而獻之<span class="src">（第18課，注釋③、課本標註）</span></div></td></tr><tr><th scope="row">仍然、還，副詞</th><td><div class="ex">其母<span class="hl">「尚」</span>織自若也<span class="src">（第16課，補充）</span></div></td></tr><tr><th scope="row">最後、終於，副詞</th><td><div class="ex"><span class="hl">「竟」</span>鬥而訟於社伯<span class="src">（第19課，補充）</span></div></td></tr><tr><th scope="row">起初、剛剛，副詞</th><td><div class="ex">令<span class="hl">「初」</span>不知愛<span class="src">（第17課，補充）</span></div><div class="ex">白樂天<span class="hl">「初」</span>舉<span class="src">（第20課，補充）</span></div></td></tr><tr><th scope="row">長久地，副詞</th><td><div class="ex">我能<span class="hl">「長」</span>自給魚<span class="src">（第18課，注釋⑪）</span></div></td></tr>
+</tbody></table></div>
+    <p class="note">副詞用來修飾動詞或形容詞：副→動詞（「漫」懸、「屢」墜、「盡」爭、「竟」鬥）。</p>
+    <h2>六、連詞與發語詞：唯、故、即、雖、則、夫</h2>
+    <div class="tablewrap"><table class="meaning orange">
+<thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">正因為，連詞</th><td><div class="ex">夫<span class="hl">「唯」</span>嗜魚，故不受也<span class="src">（第18課，注釋⑥）</span></div></td></tr><tr><th scope="row">所以，連詞</th><td><div class="ex">夫唯嗜魚，<span class="hl">「故」</span>不受也<span class="src">（第18課，補充）</span></div></td></tr><tr><th scope="row">假如、如果，連詞</th><td><div class="ex">夫<span class="hl">「即」</span>受魚，必有下人之色<span class="src">（第18課，補充）</span></div><div class="ex"><span class="hl">「即」</span>無受魚而不免於相<span class="src">（第18課，課本標註）</span></div></td></tr><tr><th scope="row">即使、縱使，連詞</th><td><div class="ex">免於相，<span class="hl">「雖」</span>嗜魚<span class="src">（第18課，補充）</span></div></td></tr><tr><th scope="row">就、便，連詞（表示接著發生的結果）</th><td><div class="ex">獲<span class="hl">「則」</span>烹<span class="src">（第19課，補充）</span></div><div class="ex">有下人之色，<span class="hl">「則」</span>枉於法<span class="src">（第18課，補充）</span></div><div class="ex">逮舉軸，<span class="hl">「則」</span>跳踉逐之<span class="src">（第17課，補充）</span></div></td></tr><tr><th scope="row">發語詞，不必翻譯</th><td><div class="ex"><span class="hl">「夫」</span>唯嗜魚<span class="src">（第18課，補充）</span></div><div class="ex"><span class="hl">「夫」</span>即受魚<span class="src">（第18課，補充）</span></div></td></tr>
+</tbody></table></div>
+    <p class="note">「故」的用法另見 11–15 課（所以）。「夫唯」是固定搭配，合起來是「正因為」。</p>
+    <h2>七、以</h2>
+    <div class="tablewrap"><table class="meaning ">
+<thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">用，介詞</th><td><div class="ex"><span class="hl">「以」</span>歌詩謁顧況<span class="src">（第20課，課本標註）</span></div><div class="ex"><span class="hl">「以」</span>試群貓（用這幅畫來試）<span class="src">（第17課，補充）</span></div></td></tr>
+</tbody></table></div>
+    <h2>八、時間詞：昔、旦、有頃、頃之、已而、及、逮</h2>
+    <div class="tablewrap"><table class="meaning blue">
+<thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">從前，名詞</th><td><div class="ex"><span class="hl">「昔」</span>者曾子處費<span class="src">（第16課，補充）</span></div><div class="ex"><span class="hl">「昔」</span>人有睹雁翔者<span class="src">（第19課，注釋①）</span></div></td></tr><tr><th scope="row">早晨，名詞</th><td><div class="ex"><span class="hl">「旦」</span>而過之<span class="src">（第17課，注釋⑦）</span></div></td></tr><tr><th scope="row">不久、一會兒</th><td><div class="ex"><span class="hl">「有頃」</span>焉<span class="src">（第16課，注釋⑤）</span></div><div class="ex"><span class="hl">「頃之」</span>，一人又告之曰<span class="src">（第16課，補充）</span></div></td></tr><tr><th scope="row">等到</th><td><div class="ex"><span class="hl">「及」</span>讀至〈賦得原上草送友人〉<span class="src">（第20課，課本標註）</span></div><div class="ex"><span class="hl">「逮」</span>舉軸<span class="src">（第17課，注釋⑨、課本標註）</span></div><div class="ex"><span class="hl">「已而」</span>索雁（導讀譯作「等到」）<span class="src">（第19課，課本標註）</span></div></td></tr>
+</tbody></table></div>
+    <p class="note">「逮」在這裡是「等到、及」，不是「逮捕」（課本標註）。表示「等到」的字詞還有 6–10 課的「比」（ㄅㄧˋ）、「迨」，以及 11–15 課的「及」。</p>
+    <h2>九、語末助詞與「者」：焉、矣、耳、也、者</h2>
+    <div class="tablewrap"><table class="meaning orange">
+<thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">語末助詞，不必翻譯</th><td><div class="ex">有頃<span class="hl">「焉」</span><span class="src">（第16課，補充）</span></div><div class="ex">烹、燔半<span class="hl">「焉」</span><span class="src">（第19課，補充）</span></div></td></tr><tr><th scope="row">了，語末助詞</th><td><div class="ex">則凌空遠<span class="hl">「矣」</span><span class="src">（第19課，補充）</span></div></td></tr><tr><th scope="row">罷了，語末助詞</th><td><div class="ex">老夫前言戲之<span class="hl">「耳」</span><span class="src">（第20課，補充）</span></div></td></tr><tr><th scope="row">語末助詞，表肯定、判斷語氣</th><td><div class="ex">其母尚織自若<span class="hl">「也」</span><span class="src">（第16課，補充）</span></div><div class="ex">故不受<span class="hl">「也」</span><span class="src">（第18課，補充）</span></div></td></tr><tr><th scope="row">…的人，助詞</th><td><div class="ex">費人有與曾子同名族<span class="hl">「者」</span>而殺人<span class="src">（第16課，補充）</span></div><div class="ex">昔人有睹雁翔<span class="hl">「者」</span><span class="src">（第19課，補充）</span></div></td></tr>
+</tbody></table></div>
+    <h2>十、動詞</h2>
+    <div class="tablewrap"><table class="meaning ">
+<thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">居住、在</th><td><div class="ex">曾子<span class="hl">「處」</span>費<span class="src">（第16課，課本標註）</span></div></td></tr><tr><th scope="row">害怕</th><td><div class="ex">其母<span class="hl">「懼」</span><span class="src">（第16課，課本標註）</span></div></td></tr><tr><th scope="row">翻越</th><td><div class="ex">投杼<span class="hl">「逾」</span>牆而走<span class="src">（第16課，注釋⑦）</span></div></td></tr><tr><th scope="row">擅長</th><td><div class="ex">士人<span class="hl">「善」</span>畫<span class="src">（第17課，注釋③）</span></div></td></tr><tr><th scope="row">察看</th><td><div class="ex">黎明<span class="hl">「物色」</span><span class="src">（第17課，注釋⑧）</span></div></td></tr><tr><th scope="row">喜愛</th><td><div class="ex">相魯而<span class="hl">「嗜」</span>魚<span class="src">（第18課，注釋②）</span></div></td></tr><tr><th scope="row">輔佐、擔任宰相</th><td><div class="ex">公孫儀<span class="hl">「相」</span>魯<span class="src">（第18課，課本標註）</span></div></td></tr><tr><th scope="row">下對上規勸</th><td><div class="ex">其弟<span class="hl">「諫」</span>曰<span class="src">（第18課，注釋⑤、課本標註）</span></div></td></tr><tr><th scope="row">遷就他人</th><td><div class="ex">必有<span class="hl">「下人」</span>之色<span class="src">（第18課，注釋⑦）</span></div></td></tr><tr><th scope="row">私意歪曲</th><td><div class="ex"><span class="hl">「枉」</span>於法<span class="src">（第18課，注釋⑧）</span></div></td></tr><tr><th scope="row">贈送</th><td><div class="ex">此不必能<span class="hl">「致」</span>我魚<span class="src">（第18課，課本標註）</span></div></td></tr><tr><th scope="row">供給</th><td><div class="ex">我又不能自<span class="hl">「給」</span>魚<span class="src">（第18課，注釋⑩）</span></div></td></tr><tr><th scope="row">看見</th><td><div class="ex">人有<span class="hl">「睹」</span>雁翔者<span class="src">（第19課，注釋②）</span></div></td></tr><tr><th scope="row">飛翔</th><td><div class="ex">睹雁<span class="hl">「翔」</span>者<span class="src">（第19課，注釋③）</span></div></td></tr><tr><th scope="row">拉</th><td><div class="ex">將<span class="hl">「援」</span>弓射之<span class="src">（第19課，注釋④）</span></div></td></tr><tr><th scope="row">燒煮（＝煮）</th><td><div class="ex">獲則<span class="hl">「烹」</span><span class="src">（第19課，注釋⑤、課本標註）</span></div></td></tr><tr><th scope="row">燒、烤（＝烤）</th><td><div class="ex">翔雁<span class="hl">「燔」</span>宜<span class="src">（第19課，注釋⑧、課本標註）</span></div></td></tr><tr><th scope="row">公開爭論是非曲直</th><td><div class="ex">竟鬥而<span class="hl">「訟」</span>於社伯<span class="src">（第19課，注釋⑨）</span></div></td></tr><tr><th scope="row">尋找</th><td><div class="ex">已而<span class="hl">「索」</span>雁<span class="src">（第19課，注釋⑪）</span></div></td></tr><tr><th scope="row">升高</th><td><div class="ex">則<span class="hl">「凌」</span>空遠矣<span class="src">（第19課，注釋⑫）</span></div></td></tr><tr><th scope="row">拜見</th><td><div class="ex">以歌詩<span class="hl">「謁」</span>顧況<span class="src">（第20課，注釋③）</span></div></td></tr><tr><th scope="row">開玩笑、戲弄</th><td><div class="ex">況<span class="hl">「謔」</span>之曰<span class="src">（第20課，注釋⑤）</span></div><div class="ex">老夫前言<span class="hl">「戲」</span>之耳<span class="src">（第20課，注釋⑧、課本標註）</span></div></td></tr>
+</tbody></table></div>
+    <p class="note">課本用「V」標出的動詞：處、懼、逾、相、致、睹、翔、援、訟、凌、索、戲、舉（中舉）。「宜」是「適合」（舒雁烹宜＝鵝適合煮）。</p>
+  </section>
+  <section id="notes">
+    <h2 class="newpage">各課重點</h2>
+    <h3 class="lesson">第16課　曾參殺人<small>　《戰國策》</small></h3>
+    <div class="tablewrap"><table class="meaning ">
+<thead><tr><th>詞語</th><th>意思</th></tr></thead>
+<tbody>
+<tr><th scope="row">曾子</th><td>曾參，字子輿，春秋時魯國武城人，以孝順聞名，道德修養高尚，後世尊稱為「宗聖」</td></tr><tr><th scope="row">處</th><td>居住、在（課本標註）</td></tr><tr><th scope="row">費</th><td>地名，在當時魯國（課本標註）</td></tr><tr><th scope="row">同名族</th><td>同名同姓</td></tr><tr><th scope="row">自若</th><td>態度自然如常</td></tr><tr><th scope="row">有頃</th><td>不久、一會兒</td></tr><tr><th scope="row">杼</th><td>織布機上用來牽引緯線的梭子</td></tr><tr><th scope="row">逾</th><td>翻越</td></tr>
+</tbody></table></div>
+    <p class="note"><b>課本隨堂練習答案：</b>1. C　2. A　3. D　4. D</p>
+    <p class="note">「予＝余＝吾」是「我」；「愚＝某＝僕」是自謙的說法（課本標註）。</p>
+    <p class="note">成語「曾參殺人」：後比喻流言可畏或誣枉的災禍（課本標註）。「三人成虎」：比喻謠言惑眾；「人云亦云」：沒有主見（課本標註）。</p>
+    <p class="note">曾母第一次、第二次聽到消息都「織自若」，第三次才「投杼逾牆而走」：謠言一再傳來，連最信任兒子的母親也會動搖。</p>
+    <h3 class="lesson">第17課　鼠畫逼真<small>　《獨醒雜志》</small></h3>
+    <div class="tablewrap"><table class="meaning ">
+<thead><tr><th>詞語</th><th>意思</th></tr></thead>
+<tbody>
+<tr><th scope="row">東安</th><td>古縣名，在今湖南省境內</td></tr><tr><th scope="row">士人</th><td>讀書人</td></tr><tr><th scope="row">善</th><td>精通、擅長</td></tr><tr><th scope="row">軸</th><td>量詞，用來計算卷軸裝裱成的書畫，相當於「幅」；後文的「軸」，都借代「圖畫」</td></tr><tr><th scope="row">邑令</th><td>縣令</td></tr><tr><th scope="row">漫</th><td>漫不經心、隨便</td></tr><tr><th scope="row">旦</th><td>早晨</td></tr><tr><th scope="row">物色</th><td>察看</td></tr><tr><th scope="row">逮</th><td>等到、及（不是逮捕）</td></tr><tr><th scope="row">跳踉</th><td>形容貓跳撞捕捉的樣子</td></tr><tr><th scope="row">然</th><td>這樣，＝如此</td></tr><tr><th scope="row">逼真</th><td>跟真的一樣（補充）</td></tr>
+</tbody></table></div>
+    <p class="note"><b>課本隨堂練習答案：</b>1. C　2. D　3. B　4. A</p>
+    <p class="note">省略的主詞（課本標註 S）：「逮舉軸」的主詞是縣令；「則跳踉逐之」的主詞是貓；「以試群貓」的主詞是縣令。</p>
+    <p class="note">「軸在地，而貓蹲其旁；逮舉軸，則跳踉逐之」：從貓的反應，側面烘托出畫得逼真（課本隨堂練習 3）。</p>
+    <p class="note">「屢懸屢墜」：一再掛上去，一再掉下來；「莫不然者」：沒有不這樣的。</p>
+    <h3 class="lesson">第18課　嗜魚弗受<small>　《韓非子》</small></h3>
+    <div class="tablewrap"><table class="meaning ">
+<thead><tr><th>詞語</th><th>意思</th></tr></thead>
+<tbody>
+<tr><th scope="row">公孫儀</th><td>《史記》稱公儀休，春秋時代魯穆公的宰相；文中稱他「一國之相」（課本標註）</td></tr><tr><th scope="row">嗜</th><td>喜愛</td></tr><tr><th scope="row">盡</th><td>都（＝舉國：全國）</td></tr><tr><th scope="row">弟</th><td>弟子</td></tr><tr><th scope="row">諫</th><td>下對上規勸</td></tr><tr><th scope="row">唯</th><td>正因為</td></tr><tr><th scope="row">下人</th><td>遷就他人</td></tr><tr><th scope="row">枉</th><td>私意歪曲</td></tr><tr><th scope="row">免</th><td>被罷免</td></tr><tr><th scope="row">給</th><td>供給</td></tr><tr><th scope="row">長</th><td>長久</td></tr><tr><th scope="row">致</th><td>贈送</td></tr>
+</tbody></table></div>
+    <p class="note"><b>課本隨堂練習答案：</b>1. A　2. B　3. C　4. B</p>
+    <p class="note">修辭「層遞」（課本標註）：受魚 → 下人之色 → 枉於法 → 免於相，一層一層推進，說明收下魚的後果。</p>
+    <p class="note">公孫儀的想法：正因為愛吃魚，才不能收魚；一旦收了魚，就會被罷免，那時別人不一定再送魚，自己又供應不起。不收魚，才能長久自己供魚給自己。</p>
+    <h3 class="lesson">第19課　兄弟爭雁<small>　《賢類編》</small></h3>
+    <div class="tablewrap"><table class="meaning ">
+<thead><tr><th>詞語</th><th>意思</th></tr></thead>
+<tbody>
+<tr><th scope="row">昔</th><td>從前</td></tr><tr><th scope="row">睹</th><td>看見</td></tr><tr><th scope="row">翔</th><td>飛翔</td></tr><tr><th scope="row">援</th><td>拉</td></tr><tr><th scope="row">烹</th><td>燒煮（＝煮）</td></tr><tr><th scope="row">舒雁</th><td>行動遲緩的鵝</td></tr><tr><th scope="row">翔雁</th><td>善於飛翔的鴻雁</td></tr><tr><th scope="row">燔</th><td>燒、烤（＝烤）</td></tr><tr><th scope="row">訟</th><td>公開爭論是非曲直</td></tr><tr><th scope="row">社伯</th><td>古代二十五戶為一社；伯，長者</td></tr><tr><th scope="row">索</th><td>尋找</td></tr><tr><th scope="row">凌</th><td>升高</td></tr><tr><th scope="row">宜</th><td>適合（補充）</td></tr>
+</tbody></table></div>
+    <p class="note"><b>課本隨堂練習答案：</b>1. A　2. D　3. D　4. C</p>
+    <p class="note">「舒雁烹宜，翔雁燔宜」＝舒雁宜烹、翔雁宜燔：鵝適合煮，鴻雁適合烤。</p>
+    <p class="note">成語「當機立斷」：把握時機，立刻做出決定（課本標註）。</p>
+    <p class="note">智慧諺語：「兄弟和氣金不換」、「打虎還需親兄弟」（見補充「成語與典故」）。</p>
+    <h3 class="lesson">第20課　顧況戲白居易<small>　《唐摭言》</small></h3>
+    <div class="tablewrap"><table class="meaning ">
+<thead><tr><th>詞語</th><th>意思</th></tr></thead>
+<tbody>
+<tr><th scope="row">白樂天</th><td>唐朝名詩人白居易，字樂天，晚年信佛，自號香山居士，又號醉吟先生</td></tr><tr><th scope="row">舉</th><td>考中舉人</td></tr><tr><th scope="row">謁</th><td>拜見（ㄧㄝˋ）</td></tr><tr><th scope="row">顧況</th><td>唐代詩人</td></tr><tr><th scope="row">謔</th><td>開玩笑、戲弄</td></tr><tr><th scope="row">野火</th><td>焚燒野草的大火</td></tr><tr><th scope="row">老夫</th><td>老年男子的自稱</td></tr><tr><th scope="row">戲</th><td>開玩笑、嘲弄</td></tr>
+</tbody></table></div>
+    <p class="note"><b>課本隨堂練習答案：</b>1. B　2. A　3. D　4. A</p>
+    <p class="note">顧況說「長安百物貴，居大不易」，是拿白居易名字裡的「居易」二字開玩笑；讀到「野火燒不盡，春風吹又生」後，才改口稱讚，說「居天下有何難」。</p>
+    <p class="note">「有句如此，居天下有何難！」是激問，意思是「一點也不難」。</p>
+    <p class="note">「野火燒不盡，春風吹又生」：常用來比喻問題若沒有從根本解決，過一段時間可能又會再發生（課本隨堂練習 3）。「防患未然」是在禍患沒有發生之前就加以防備（課本標註）。</p>
+  </section>
+  <section id="extra">
+    <h2>補充</h2>
+    <h3>轉品（詞性轉換）</h3>
+    <div class="tablewrap"><table class="meaning orange">
+<thead><tr><th>詞語</th><th>詞性轉變與意思</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">相</th><td>名詞（宰相）→ 動詞：輔佐、擔任宰相</td><td>公孫儀<span class="hl">「相」</span>魯（第18課，課本標註）</td></tr><tr><th scope="row">怪</th><td>形容詞（奇怪）→ 動詞：覺得奇怪</td><td>令<span class="hl">「怪」</span>之（第17課，補充）</td></tr><tr><th scope="row">旦</th><td>名詞（早晨）→ 副詞：在早晨、每天早晨</td><td><span class="hl">「旦」</span>而過之（第17課，注釋⑦、補充）</td></tr><tr><th scope="row">下</th><td>方位詞（下面）→ 動詞：把自己放在對方之下，遷就</td><td>必有<span class="hl">「下」</span>人之色（第18課，注釋⑦、補充）</td></tr>
+</tbody></table></div>
+    <p class="note">轉品：詞語臨時轉用成另一種詞性。</p>
+    <h3>借代（第17課）</h3>
+    <div class="tablewrap"><table class="meaning blue">
+<thead><tr><th>詞語</th><th>借代的意思</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">軸</th><td>以裱成卷軸的畫，借代「圖畫」</td><td><span class="hl">「軸」</span>在地；逮舉<span class="hl">「軸」</span>（第17課，注釋④）</td></tr>
+</tbody></table></div>
+    <p class="note">借代：不直接說出本來的人事物，改用和它關係密切的名稱來代替。</p>
+    <h3>修辭</h3>
+    <div class="tablewrap"><table class="meaning orange">
+<thead><tr><th>修辭</th><th>說明</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">層遞</th><td>依照程度、範圍、事情的發展，一層一層推進</td><td>夫即受魚，必有下人之色；有下人之色，則枉於法；枉於法，則免於相（第18課，課本標註）</td></tr><tr><th scope="row">頂真</th><td>前一句的結尾，成為下一句的開頭</td><td>有下人之色，則枉於法；枉於法，則免於相（第18課，補充）</td></tr><tr><th scope="row">側面烘托</th><td>不直接描寫，從旁人或旁物的反應，襯托出主要的人事物</td><td>軸在地，而貓蹲其旁；逮舉軸，則跳踉逐之（第17課，課本隨堂練習 3）</td></tr><tr><th scope="row">提問</th><td>心中有疑而問，答案在下文</td><td>夫子嗜魚而不受者，何也？（第18課，補充）</td></tr><tr><th scope="row">激問</th><td>答案在問題的反面，用來加強語氣</td><td>有句如此，居天下有何難！（第20課，補充）</td></tr><tr><th scope="row">雙關</th><td>一句話同時含有兩層意思</td><td>居大不易：表面說長安物價貴，實則拿「居易」的名字開玩笑（第20課，補充）</td></tr>
+</tbody></table></div>
+    <h3>成語、典故與諺語</h3>
+    <div class="tablewrap"><table class="meaning blue">
+<thead><tr><th>詞語</th><th>意思</th><th>出處</th></tr></thead>
+<tbody>
+<tr><th scope="row">投杼（曾母投杼）</th><td>比喻謠言一再傳來，連最親信的人也會動搖</td><td>第16課，課本隨堂練習 4</td></tr><tr><th scope="row">三人成虎</th><td>比喻謠言惑眾</td><td>第16課，課本標註</td></tr><tr><th scope="row">人云亦云</th><td>沒有主見，別人怎麼說就跟著說</td><td>第16課，課本標註</td></tr><tr><th scope="row">民胞物與</th><td>視人民如同胞，視動物如同類，比喻博愛</td><td>第18課，課本標註</td></tr><tr><th scope="row">枕石漱流</th><td>以山石為枕，以溪流漱口，形容高潔之士的隱居生活</td><td>第18課，課本標註</td></tr><tr><th scope="row">廉潔奉公</th><td>為官清廉，一心為公</td><td>第18課，補充</td></tr><tr><th scope="row">任勞任怨</th><td>肯辛苦做事，也承受得起別人的埋怨</td><td>第18課，補充</td></tr><tr><th scope="row">香餌之下必有懸魚</th><td>有好處可圖，就一定有人願意去做，＝重賞之下必有勇夫</td><td>第18課，課本標註</td></tr><tr><th scope="row">飲水思源</th><td>吃飯不忘種穀人，飲水不忘掘井人；比喻不忘本</td><td>第18課，課本標註</td></tr><tr><th scope="row">當機立斷</th><td>把握時機，立刻做出決定</td><td>第19課，課本標註</td></tr><tr><th scope="row">兄弟和氣金不換</th><td>兄弟相處和睦融洽，非常可貴，再多的財富也比不上</td><td>第19課，智慧諺語</td></tr><tr><th scope="row">打虎還需親兄弟</th><td>辦事情時，還是需要親如兄弟的人同心協力</td><td>第19課，智慧諺語</td></tr><tr><th scope="row">防患未然</th><td>在禍患沒有發生之前就加以防備</td><td>第20課，課本標註</td></tr><tr><th scope="row">名噪一時</th><td>名聲傳揚，轟動一時</td><td>第20課，補充</td></tr>
+</tbody></table></div>
+    <h3>字音辨析</h3>
+    <div class="tablewrap"><table class="meaning ">
+<thead><tr><th>字</th><th>讀音</th><th>例詞（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">處</th><td>ㄔㄨˇ</td><td>曾子處費（居住，第16課）</td></tr><tr><th scope="row">費</th><td>ㄅㄧˋ</td><td>費人（地名，第16課）</td></tr><tr><th scope="row">頃</th><td>ㄑㄧㄥˇ</td><td>有頃、頃之（第16課）</td></tr><tr><th scope="row">杼</th><td>ㄓㄨˋ</td><td>投杼（第16課）</td></tr><tr><th scope="row">逾</th><td>ㄩˊ</td><td>逾牆而走（第16課）</td></tr><tr><th scope="row">屢</th><td>ㄌㄩˇ</td><td>屢懸屢墜（第17課）</td></tr><tr><th scope="row">逮</th><td>ㄉㄞˋ</td><td>逮舉軸（等到，第17課）；逮捕則讀ㄉㄞˇ</td></tr><tr><th scope="row">嗜</th><td>ㄕˋ</td><td>嗜魚（第18課）</td></tr><tr><th scope="row">諫</th><td>ㄐㄧㄢˋ</td><td>其弟諫曰（第18課）</td></tr><tr><th scope="row">燔</th><td>ㄈㄢˊ</td><td>翔雁燔宜（第19課）</td></tr><tr><th scope="row">訟</th><td>ㄙㄨㄥˋ</td><td>竟鬥而訟於社伯（第19課）</td></tr><tr><th scope="row">剖</th><td>ㄆㄡˇ</td><td>社伯請剖雁（第19課）</td></tr><tr><th scope="row">謁</th><td>ㄧㄝˋ</td><td>以歌詩謁顧況（第20課）</td></tr><tr><th scope="row">謔</th><td>ㄒㄩㄝˋ</td><td>況謔之曰（第20課）</td></tr>
+</tbody></table></div>
+    <h3>賦得古原草送別／白居易（簡報）</h3>
+    <div class="poem"><p><span class="hl">「離離」</span>原上草，一歲一枯榮。</p><p>野火燒不盡，春風吹又生。</p><p>遠芳侵古道，晴翠接荒城。</p><p>又送王孫去，<span class="hl">「萋萋」</span>滿別情。</p></div>
+    <div class="tablewrap"><table class="meaning blue">
+<thead><tr><th>詞語</th><th>意思</th><th>例句（出處）</th></tr></thead>
+<tbody>
+<tr><th scope="row">離離</th><td>茂盛的樣子</td><td>三十六宮花離離，軟風吹春星斗稀（唐．溫庭筠）</td></tr><tr><th scope="row">萋萋</th><td>草茂盛的樣子</td><td>晴川歷歷漢陽樹，春草萋萋鸚鵡洲（唐．崔顥）</td></tr>
+</tbody></table></div>
+    <p class="note">離離、蔚蔚、萋萋、扶疏，都是形容草木茂盛的樣子（簡報）。</p>
+    <p class="note">「又送王孫去，萋萋滿別情」化用《楚辭》「王孫游兮不歸，春草生兮萋萋」，以春草寫「離情」；李煜「離恨恰如春草，更行更遠還生」也是同樣的手法（簡報）。</p>
+    <p class="note">「賦得」：以古人詩句或成語為題作詩，題目前面加上「賦得」二字（補充）。</p>
+  </section>
+  <section id="practice">
+    <h2 class="newpage">古文今讀 16–20 課　虛字練習</h2>
+    <p class="infoline printonly">班級：＿＿＿＿　座號：＿＿＿＿　姓名：＿＿＿＿＿＿　　得分：＿＿＿＿</p>
+    <p class="rule">選擇題（每題 4 分，共 100 分）。粗體加底線的字為題目所問的字。直接點選答案作答。</p>
+<h3 class="lesson">虛字練習（課文中的虛字）</h3>
+<ol class="qs">
+<li class="q" data-a="D" data-sec="v" data-pts="4"><div class="stem">「<u><b>吾</b></u>子不殺人」的「吾」，與下列哪一個字的意思「不同」？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 予<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 余<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 僕<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 汝<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">予＝余＝吾＝僕，都是「我」（僕多用於自謙）；汝是「你」。</span></div></li>
+<li class="q" data-a="C" data-sec="v" data-pts="4"><div class="stem">下列哪一個字，是用來表示「自謙」的自稱？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 吾<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 予<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 愚<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 余<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">愚＝某＝僕，是自謙的說法；吾、予、余只是一般的「我」。</span></div></li>
+<li class="q" data-a="B" data-sec="v" data-pts="4"><div class="stem">「曾子<u><b>之</b></u>母曰」的「之」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 他<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 的<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 去、往<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 這<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">曾子之母＝曾子的母親，「之」是助詞，相當於「的」。</span></div></li>
+<li class="q" data-a="C" data-sec="v" data-pts="4"><div class="stem">「令怪<u><b>之</b></u>」的「之」，指的是什麼？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 士人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 貓<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 畫軸掉落地面這件事<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 縣令<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">縣令覺得奇怪的，是畫軸一再掉落在地上這件事（課本標註）。</span></div></li>
+<li class="q" data-a="A" data-sec="v" data-pts="4"><div class="stem">下列各句「之」所指的對象，何者「正確」？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 旦而過之：掛畫的地方<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 將援弓射之：兄弟<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 一國盡爭買魚而獻之：魚<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 況謔之曰：顧況<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">過之＝經過掛畫的地方；射之＝射雁；獻之＝獻給公孫儀；謔之＝戲弄白居易。</span></div></li>
+<li class="q" data-a="B" data-sec="v" data-pts="4"><div class="stem">「竟鬥而訟<u><b>於</b></u>社伯」的「於」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 在<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 向<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 比<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 被<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">訟於社伯＝向社伯訴訟，請他評理。</span></div></li>
+<li class="q" data-a="D" data-sec="v" data-pts="4"><div class="stem">「則免<u><b>於</b></u>相」的「於」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 對於<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 比<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 給<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 被<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">免於相＝被罷免宰相（注釋⑨）；「於」放在動詞後面，表示被動。</span></div></li>
+<li class="q" data-a="C" data-sec="v" data-pts="4"><div class="stem">下列哪一句的「於」，意思是「在」？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 苛政猛於虎<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 己所不欲，勿施於人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 漫懸於壁<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 則免於相<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">漫懸於壁＝隨便掛在牆壁上。苛政猛於虎（比）、勿施於人（給）、免於相（被）。</span></div></li>
+<li class="q" data-a="A" data-sec="v" data-pts="4"><div class="stem">「<u><b>以</b></u>歌詩謁顧況」的「以」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 用<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 因為<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 認為<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 而且<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">以歌詩＝用詩歌；謁＝拜見（課本標註「用」）。</span></div></li>
+<li class="q" data-a="C" data-sec="v" data-pts="4"><div class="stem">「一國<u><b>盡</b></u>爭買魚而獻之」的「盡」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 用盡<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 結束<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 全、都<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 盡力<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">盡：都（注釋③），副詞。一國盡＝舉國、全國都。</span></div></li>
+<li class="q" data-a="B" data-sec="v" data-pts="4"><div class="stem">下列「舉」字的意思，何者「配對錯誤」？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 百廢待舉：興起、發動<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 逮舉軸：考中舉人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 舉國歡騰：全部的<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 白樂天初舉：考中舉人<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">逮舉軸的「舉」是拿起、提起；考中舉人是「白樂天初舉」。</span></div></li>
+<li class="q" data-a="B" data-sec="v" data-pts="4"><div class="stem">「軸必墜地，<u><b>屢</b></u>懸<u><b>屢</b></u>墜」的「屢」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 偶爾<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 每每、總是<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 曾經<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 從不<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">屢懸屢墜＝一再掛上去，一再掉下來（課本標註「每每、總是」）。</span></div></li>
+<li class="q" data-a="D" data-sec="v" data-pts="4"><div class="stem">「<u><b>漫</b></u>懸於壁」的「漫」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 水滿溢出<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 長遠<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 遍布<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 隨便、漫不經心地<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">漫：漫不經心、隨便（注釋⑥），副詞。</span></div></li>
+<li class="q" data-a="A" data-sec="v" data-pts="4"><div class="stem">「夫<u><b>唯</b></u>嗜魚，<u><b>故</b></u>不受也」的「唯」與「故」，意思依序是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 正因為、所以<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 只有、原因<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 只有、所以<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 正因為、故意<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">唯：正因為（注釋⑥）；故：所以，連詞。</span></div></li>
+<li class="q" data-a="B" data-sec="v" data-pts="4"><div class="stem">「夫<u><b>即</b></u>受魚，必有下人之色」的「即」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 就是<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 假如<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 靠近<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 立刻<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">即：假如，連詞。夫即受魚＝假如收下了魚。</span></div></li>
+<li class="q" data-a="D" data-sec="v" data-pts="4"><div class="stem">下列哪一個詞，「不能」用來表示「等到」？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 「及」讀至〈賦得原上草送友人〉<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 「逮」舉軸<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 「比」行百里<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 「昔」人有睹雁翔者<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">及、逮、比都是「等到」；昔＝從前。</span></div></li>
+<li class="q" data-a="B" data-sec="v" data-pts="4"><div class="stem">「舒雁烹宜，翔雁燔宜」的意思是？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 鵝適合烤，鴻雁適合煮<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 鵝適合煮，鴻雁適合烤<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 鵝和鴻雁都適合煮<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 鵝適合養，鴻雁適合射<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">舒雁＝行動遲緩的鵝；翔雁＝善於飛翔的鴻雁；烹＝煮；燔＝烤；宜＝適合。</span></div></li>
+<li class="q" data-a="C" data-sec="v" data-pts="4"><div class="stem">「<u><b>有頃</b></u><u><b>焉</b></u>，人又曰」的「有頃」與「焉」，意思依序是？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 有一頃田、疑問詞「哪裡」<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 很久、代詞「牠」<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 不久、語末助詞（不必翻譯）<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 過了很久、連詞「於是」<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">有頃：不久、一會兒（注釋⑤）；焉：語末助詞，不必翻譯。</span></div></li>
+<li class="q" data-a="A" data-sec="v" data-pts="4"><div class="stem">「老夫前言<u><b>戲</b></u>之<u><b>耳</b></u>」的「戲」與「耳」，意思依序是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 開玩笑、罷了<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 遊戲、耳朵<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 戲劇、罷了<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 開玩笑、你<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">戲：開玩笑、嘲弄（注釋⑧）；耳：語末助詞，罷了。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="v"></p>
+<h3 class="lesson">成語、修辭與文學常識</h3>
+<ol class="qs" style="counter-reset: q 19">
+<li class="q" data-a="D" data-sec="c" data-pts="4"><div class="stem">「三人成虎」比喻什麼？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 人多力量大，凡事都能成功<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 三個人合作，就能制伏老虎<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 只要人多，就不怕危險<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 謠言傳的人多了，就讓人信以為真<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">三人成虎：比喻謠言惑眾（課本標註）。曾參殺人的故事，說的就是同樣的道理。</span></div></li>
+<li class="q" data-a="A" data-sec="c" data-pts="4"><div class="stem">「夫即受魚，必有下人之色；有下人之色，則枉於法；枉於法，則免於相。」運用了哪一種修辭？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 層遞<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 映襯<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 誇飾<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 借代<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">受魚 → 下人之色 → 枉於法 → 免於相，一層一層推進，是層遞（課本標註）。</span></div></li>
+<li class="q" data-a="C" data-sec="c" data-pts="4"><div class="stem">下列成語與意義的配對，何者「正確」？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 民胞物與：肯辛苦做事，也承受得起別人的埋怨<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 任勞任怨：視人民如同胞，視動物如同類<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 枕石漱流：形容高潔之士的隱居生活<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 廉潔奉公：以山石為枕，以溪流漱口<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">民胞物與＝博愛；任勞任怨＝不怕辛勞和埋怨；廉潔奉公＝為官清廉、一心為公。</span></div></li>
+<li class="q" data-a="A" data-sec="c" data-pts="4"><div class="stem">「香餌之下必有懸魚」與下列哪一句話的意思最接近？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 重賞之下必有勇夫<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 飲水思源<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 見之不取，思之千里<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 人云亦云<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">有好處可圖，就一定有人願意去做（課本標註：＝重賞之下必有勇夫）。</span></div></li>
+<li class="q" data-a="B" data-sec="c" data-pts="4"><div class="stem">「又送王孫去，<u><b>萋萋</b></u>滿別情」的「萋萋」，形容的是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 雨聲淅瀝<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 草茂盛的樣子<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 心情淒涼<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 道路遙遠<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">離離、蔚蔚、萋萋、扶疏，都是形容草木茂盛的樣子（簡報）。</span></div></li>
+<li class="q" data-a="D" data-sec="c" data-pts="4"><div class="stem">「又送王孫去，萋萋滿別情」化用《楚辭》「王孫游兮不歸，春草生兮萋萋」，詩中以春草寫出什麼情感？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 壯志未酬的悲憤<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 隱居山林的閒適<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 懷念故鄉的鄉愁<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 送別友人的離情<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">以春草不斷蔓生，比喻離愁不斷，是寫「離情」（簡報）。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="c"></p>
+  </section>
+  <section id="lessonqs">
+    <h2 class="newpage">古文今讀 16–20 課　課文選擇題</h2>
+    <p class="infoline printonly">班級：＿＿＿＿　座號：＿＿＿＿　姓名：＿＿＿＿＿＿　　得分：＿＿＿＿</p>
+    <p class="rule">課文文意選擇題（每課 4 題，每題 5 分，共 100 分）。直接點選答案作答。</p>
+<h3 class="lesson">第16課　曾參殺人<small>　《戰國策》</small></h3>
+<ol class="qs">
+<li class="q" data-a="A" data-sec="l16" data-pts="5"><div class="stem">第一個人來告訴曾母「曾參殺人」時，曾母的反應是？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 不相信，仍然繼續織布，態度自然如常<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 立刻丟下梭子逃走<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 馬上去找曾參對質<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 非常生氣，罵告訴她的人<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">「曾子之母曰：吾子不殺人。織自若也。」</span></div></li>
+<li class="q" data-a="C" data-sec="l16" data-pts="5"><div class="stem">費地真正殺了人的，是誰？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 曾參<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 曾母<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 與曾子同名同姓的人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 告訴曾母消息的人<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">「費人有與曾子同名族者而殺人」；同名族＝同名同姓。</span></div></li>
+<li class="q" data-a="D" data-sec="l16" data-pts="5"><div class="stem">曾母前兩次「織自若」，第三次卻「投杼逾牆而走」，這種轉變說明了什麼？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 曾母本來就不了解自己的兒子<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 曾母的織布工作剛好完成了<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 第三個人說的話，比前兩個人更有道理<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 消息一再傳來，連最信任兒子的母親也會動搖<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">曾母的態度改變，不是因為事實不同，而是因為同樣的話聽了一遍又一遍。</span></div></li>
+<li class="q" data-a="B" data-sec="l16" data-pts="5"><div class="stem">這則故事最能提醒我們，面對傳言時應該怎麼做？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 聽的人多了，就可以相信<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 自己先查證，保持理性判斷，不被謠言左右<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 不理會任何消息<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 立刻轉告身邊的人<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">故事的寓意：流言可畏，謠言傳得多了，連堅定的信念也會被動搖。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="l16"></p>
+<h3 class="lesson">第17課　鼠畫逼真<small>　《獨醒雜志》</small></h3>
+<ol class="qs">
+<li class="q" data-a="C" data-sec="l17" data-pts="5"><div class="stem">縣令一開始把鼠畫「漫懸於壁」，可以看出他當時對這幅畫的態度是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 十分珍愛<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 非常厭惡<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 隨便，並不特別重視<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 打算轉送給別人<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">漫：隨便（注釋⑥）；「令初不知愛」，也就是一開始不懂得珍惜。</span></div></li>
+<li class="q" data-a="A" data-sec="l17" data-pts="5"><div class="stem">縣令為什麼會「怪之」？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 掛在牆上的畫，每天早晨都掉落地上，而且一再如此<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 貓總是跑進他的房間<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 士人送的畫太小了<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 畫中的老鼠不見了<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">「旦而過之，軸必墜地，屢懸屢墜」。</span></div></li>
+<li class="q" data-a="B" data-sec="l17" data-pts="5"><div class="stem">縣令發現畫軸掉在地上、貓蹲在旁邊，等他舉起畫軸時，貓有什麼反應？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 轉身跑開<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 跳躍撲抓，追逐畫中的老鼠<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 閉上眼睛睡覺<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 對著縣令喵喵叫<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">「逮舉軸，則跳踉逐之」。</span></div></li>
+<li class="q" data-a="D" data-sec="l17" data-pts="5"><div class="stem">縣令用這幅畫試了其他的貓，「莫不然者」，最後得到什麼結論？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 貓都很愛吃老鼠<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 畫太重，所以才會掉下來<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 這些貓都是士人訓練的<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 這幅鼠畫畫得十分逼真<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">「於是始知其畫為逼真」。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="l17"></p>
+<h3 class="lesson">第18課　嗜魚弗受<small>　《韓非子》</small></h3>
+<ol class="qs">
+<li class="q" data-a="B" data-sec="l18" data-pts="5"><div class="stem">「夫即受魚，必有下人之色」這句話的意思是？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 如果收下魚，就得回送禮物<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 如果收下魚，就一定會露出遷就對方的神色<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 如果收下魚，魚一定不新鮮<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 如果不收魚，別人一定會生氣<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">下人＝遷就他人（注釋⑦）；色＝神色、態度。</span></div></li>
+<li class="q" data-a="D" data-sec="l18" data-pts="5"><div class="stem">公孫儀認為接受別人送的魚，最後會有什麼結果？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 魚吃多了對身體不好<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 國君會嫉妒他<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 別人就不再送魚了<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 遷就他人而歪曲法律，最後被罷免宰相<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">下人之色 → 枉於法 → 免於相（層遞）。</span></div></li>
+<li class="q" data-a="A" data-sec="l18" data-pts="5"><div class="stem">公孫儀說「我又不能自給魚」，意思是？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 被罷免後，他也沒有能力自己長期供應魚給自己<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 他不會釣魚<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 他不喜歡自己買魚<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 他家裡沒有錢買魚<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">免於相，雖嗜魚，此不必能致我魚，我又不能自給魚：被罷免後，送魚的人不一定再送，自己又供應不起。</span></div></li>
+<li class="q" data-a="C" data-sec="l18" data-pts="5"><div class="stem">從公孫儀不受魚的做法，最能看出他是怎樣的人？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 貪圖享受<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 吝嗇小氣<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 有遠見，拒絕眼前的小利，保全長遠的利益，而且守法清廉<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 不善交際<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">他不收魚，是看得長遠，也不願為了魚而枉法。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="l18"></p>
+<h3 class="lesson">第19課　兄弟爭雁<small>　《賢類編》</small></h3>
+<ol class="qs">
+<li class="q" data-a="D" data-sec="l19" data-pts="5"><div class="stem">哥哥看見雁飛過，說「獲則烹」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 射到了就放走<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 射不到就改天再射<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 射到了就送給別人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 射到了就煮來吃<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">獲：射到；則：就；烹：煮。</span></div></li>
+<li class="q" data-a="C" data-sec="l19" data-pts="5"><div class="stem">弟弟為什麼主張「翔雁燔宜」？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 因為烤的比較快<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 因為他不會煮東西<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 因為善於飛翔的鴻雁適合烤來吃<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 因為哥哥說要煮，他就故意唱反調<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">翔雁＝善於飛翔的鴻雁；燔＝烤；宜＝適合。</span></div></li>
+<li class="q" data-a="A" data-sec="l19" data-pts="5"><div class="stem">社伯處理兄弟爭執的辦法是？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 要他們把雁剖開，一半煮、一半烤<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 判定哥哥是對的<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 判定弟弟是對的<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 要他們回家再想一想<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">「社伯請剖雁，烹、燔半焉」。</span></div></li>
+<li class="q" data-a="B" data-sec="l19" data-pts="5"><div class="stem">「已而索雁，則凌空遠矣」，這句話帶給我們什麼啟示？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 雁是很聰明的鳥<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 只顧爭論不休而錯過時機，最後什麼也得不到<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 遇到爭執就要找人評理<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 射雁要用好的弓<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">兄弟爭得太久，雁早就飛遠了。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="l19"></p>
+<h3 class="lesson">第20課　顧況戲白居易<small>　《唐摭言》</small></h3>
+<ol class="qs">
+<li class="q" data-a="C" data-sec="l20" data-pts="5"><div class="stem">白居易帶著詩作去拜見顧況，是為了什麼？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 請他幫忙找工作<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 向他學習作畫<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 請他批評指教，打開自己的知名度<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 邀他一起去旅行<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">當時文人有一種風氣：把自己的作品送給有名望的人過目，請他們批評指教。</span></div></li>
+<li class="q" data-a="B" data-sec="l20" data-pts="5"><div class="stem">顧況讀到〈賦得原上草送友人〉的哪兩句詩，而改變了對白居易的看法？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 離離原上草，一歲一枯榮<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 野火燒不盡，春風吹又生<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 遠芳侵古道，晴翠接荒城<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 又送王孫去，萋萋滿別情<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">文中「及讀至……詩曰：野火燒不盡，春風吹又生」，顧況才嘆道：「有句如此，居天下有何難！」</span></div></li>
+<li class="q" data-a="D" data-sec="l20" data-pts="5"><div class="stem">顧況說「老夫前言戲之耳」，是想表達什麼？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 他年紀大了，記錯了<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 他要收白居易為弟子<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 他認為白居易的詩不好<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 先前說的話只是開玩笑罷了<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">戲：開玩笑（注釋⑧）；耳：罷了。前言戲之耳＝先前說的只是玩笑話。</span></div></li>
+<li class="q" data-a="A" data-sec="l20" data-pts="5"><div class="stem">「有句如此，居天下有何難！」這句話的意思是？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 有這樣的詩句，住在天下任何地方都不難<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 寫出這樣的詩句非常困難<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 有這樣的詩句，就不必住在長安<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 住在天下任何地方都很困難<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">這是激問，答案在問題的反面：一點也不難。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="l20"></p>
+  </section>
+  <section id="answers">
+    <h2 class="newpage">參考答案與解析</h2>
+    <details class="answers">
+      <summary>顯示參考答案與解析（老師用）</summary>
+      <h3>壹、虛字練習</h3>
+      <div class="tablewrap"><table class="key">
+<thead><tr><th>題號</th><th>答案</th><th>解析</th></tr></thead>
+<tbody>
+<tr><td class="c">1</td><td class="c ans">D</td><td>予＝余＝吾＝僕，都是「我」（僕多用於自謙）；汝是「你」。</td></tr><tr><td class="c">2</td><td class="c ans">C</td><td>愚＝某＝僕，是自謙的說法；吾、予、余只是一般的「我」。</td></tr><tr><td class="c">3</td><td class="c ans">B</td><td>曾子之母＝曾子的母親，「之」是助詞，相當於「的」。</td></tr><tr><td class="c">4</td><td class="c ans">C</td><td>縣令覺得奇怪的，是畫軸一再掉落在地上這件事（課本標註）。</td></tr><tr><td class="c">5</td><td class="c ans">A</td><td>過之＝經過掛畫的地方；射之＝射雁；獻之＝獻給公孫儀；謔之＝戲弄白居易。</td></tr><tr><td class="c">6</td><td class="c ans">B</td><td>訟於社伯＝向社伯訴訟，請他評理。</td></tr><tr><td class="c">7</td><td class="c ans">D</td><td>免於相＝被罷免宰相（注釋⑨）；「於」放在動詞後面，表示被動。</td></tr><tr><td class="c">8</td><td class="c ans">C</td><td>漫懸於壁＝隨便掛在牆壁上。苛政猛於虎（比）、勿施於人（給）、免於相（被）。</td></tr><tr><td class="c">9</td><td class="c ans">A</td><td>以歌詩＝用詩歌；謁＝拜見（課本標註「用」）。</td></tr><tr><td class="c">10</td><td class="c ans">C</td><td>盡：都（注釋③），副詞。一國盡＝舉國、全國都。</td></tr><tr><td class="c">11</td><td class="c ans">B</td><td>逮舉軸的「舉」是拿起、提起；考中舉人是「白樂天初舉」。</td></tr><tr><td class="c">12</td><td class="c ans">B</td><td>屢懸屢墜＝一再掛上去，一再掉下來（課本標註「每每、總是」）。</td></tr><tr><td class="c">13</td><td class="c ans">D</td><td>漫：漫不經心、隨便（注釋⑥），副詞。</td></tr><tr><td class="c">14</td><td class="c ans">A</td><td>唯：正因為（注釋⑥）；故：所以，連詞。</td></tr><tr><td class="c">15</td><td class="c ans">B</td><td>即：假如，連詞。夫即受魚＝假如收下了魚。</td></tr><tr><td class="c">16</td><td class="c ans">D</td><td>及、逮、比都是「等到」；昔＝從前。</td></tr><tr><td class="c">17</td><td class="c ans">B</td><td>舒雁＝行動遲緩的鵝；翔雁＝善於飛翔的鴻雁；烹＝煮；燔＝烤；宜＝適合。</td></tr><tr><td class="c">18</td><td class="c ans">C</td><td>有頃：不久、一會兒（注釋⑤）；焉：語末助詞，不必翻譯。</td></tr><tr><td class="c">19</td><td class="c ans">A</td><td>戲：開玩笑、嘲弄（注釋⑧）；耳：語末助詞，罷了。</td></tr><tr><td class="c">20</td><td class="c ans">D</td><td>三人成虎：比喻謠言惑眾（課本標註）。曾參殺人的故事，說的就是同樣的道理。</td></tr><tr><td class="c">21</td><td class="c ans">A</td><td>受魚 → 下人之色 → 枉於法 → 免於相，一層一層推進，是層遞（課本標註）。</td></tr><tr><td class="c">22</td><td class="c ans">C</td><td>民胞物與＝博愛；任勞任怨＝不怕辛勞和埋怨；廉潔奉公＝為官清廉、一心為公。</td></tr><tr><td class="c">23</td><td class="c ans">A</td><td>有好處可圖，就一定有人願意去做（課本標註：＝重賞之下必有勇夫）。</td></tr><tr><td class="c">24</td><td class="c ans">B</td><td>離離、蔚蔚、萋萋、扶疏，都是形容草木茂盛的樣子（簡報）。</td></tr><tr><td class="c">25</td><td class="c ans">D</td><td>以春草不斷蔓生，比喻離愁不斷，是寫「離情」（簡報）。</td></tr>
+</tbody></table></div>
+      <h3>貳、課文選擇題（題號：課次－題號）</h3>
+      <div class="tablewrap"><table class="key">
+<thead><tr><th>題號</th><th>答案</th><th>解析</th></tr></thead>
+<tbody>
+<tr><td class="c">16－1</td><td class="c ans">A</td><td>「曾子之母曰：吾子不殺人。織自若也。」</td></tr><tr><td class="c">16－2</td><td class="c ans">C</td><td>「費人有與曾子同名族者而殺人」；同名族＝同名同姓。</td></tr><tr><td class="c">16－3</td><td class="c ans">D</td><td>曾母的態度改變，不是因為事實不同，而是因為同樣的話聽了一遍又一遍。</td></tr><tr><td class="c">16－4</td><td class="c ans">B</td><td>故事的寓意：流言可畏，謠言傳得多了，連堅定的信念也會被動搖。</td></tr><tr><td class="c">17－1</td><td class="c ans">C</td><td>漫：隨便（注釋⑥）；「令初不知愛」，也就是一開始不懂得珍惜。</td></tr><tr><td class="c">17－2</td><td class="c ans">A</td><td>「旦而過之，軸必墜地，屢懸屢墜」。</td></tr><tr><td class="c">17－3</td><td class="c ans">B</td><td>「逮舉軸，則跳踉逐之」。</td></tr><tr><td class="c">17－4</td><td class="c ans">D</td><td>「於是始知其畫為逼真」。</td></tr><tr><td class="c">18－1</td><td class="c ans">B</td><td>下人＝遷就他人（注釋⑦）；色＝神色、態度。</td></tr><tr><td class="c">18－2</td><td class="c ans">D</td><td>下人之色 → 枉於法 → 免於相（層遞）。</td></tr><tr><td class="c">18－3</td><td class="c ans">A</td><td>免於相，雖嗜魚，此不必能致我魚，我又不能自給魚：被罷免後，送魚的人不一定再送，自己又供應不起。</td></tr><tr><td class="c">18－4</td><td class="c ans">C</td><td>他不收魚，是看得長遠，也不願為了魚而枉法。</td></tr><tr><td class="c">19－1</td><td class="c ans">D</td><td>獲：射到；則：就；烹：煮。</td></tr><tr><td class="c">19－2</td><td class="c ans">C</td><td>翔雁＝善於飛翔的鴻雁；燔＝烤；宜＝適合。</td></tr><tr><td class="c">19－3</td><td class="c ans">A</td><td>「社伯請剖雁，烹、燔半焉」。</td></tr><tr><td class="c">19－4</td><td class="c ans">B</td><td>兄弟爭得太久，雁早就飛遠了。</td></tr><tr><td class="c">20－1</td><td class="c ans">C</td><td>當時文人有一種風氣：把自己的作品送給有名望的人過目，請他們批評指教。</td></tr><tr><td class="c">20－2</td><td class="c ans">B</td><td>文中「及讀至……詩曰：野火燒不盡，春風吹又生」，顧況才嘆道：「有句如此，居天下有何難！」</td></tr><tr><td class="c">20－3</td><td class="c ans">D</td><td>戲：開玩笑（注釋⑧）；耳：罷了。前言戲之耳＝先前說的只是玩笑話。</td></tr><tr><td class="c">20－4</td><td class="c ans">A</td><td>這是激問，答案在問題的反面：一點也不難。</td></tr>
+</tbody></table></div>
+    </details>
+  </section>
+  <footer>古文今讀 16–20 課　虛字整理與選擇題</footer>
+</main>
+<script>
+
+(function () {
+  var qs = Array.prototype.slice.call(document.querySelectorAll('li.q'));
+  var mode = 'practice', submitted = false;
+  var $ = function (id) { return document.getElementById(id); };
+  var LAB = { p: '', l1: '', l2: '', l3: '', l4: '', l5: '' };
+
+  function reveal(q) {
+    var chosen = q.getAttribute('data-chosen'), ans = q.getAttribute('data-a');
+    var exp = q.querySelector('.exp'), res = q.querySelector('.res');
+    q.classList.add('done');
+    Array.prototype.forEach.call(q.querySelectorAll('button.opt'), function (b) {
+      var k = b.getAttribute('data-k'), m = b.querySelector('.mark');
+      b.classList.remove('sel');
+      b.setAttribute('aria-disabled', 'true');
+      if (k === ans) { b.classList.add('right'); m.textContent = '✓ 正確答案'; }
+      else if (k === chosen) { b.classList.add('wrong'); m.textContent = '✗'; }
+    });
+    exp.hidden = false;
+    if (!chosen) { exp.className = 'exp no'; res.textContent = '未作答，正確答案是 ' + ans + '。'; }
+    else if (chosen === ans) { exp.className = 'exp ok'; res.textContent = '答對了！'; }
+    else { exp.className = 'exp no'; res.textContent = '答錯了，正確答案是 ' + ans + '。'; }
+  }
+
+  function stats() {
+    var answered = 0, correct = 0, secs = {};
+    qs.forEach(function (q) {
+      var s = q.getAttribute('data-sec'), pts = +q.getAttribute('data-pts');
+      secs[s] = secs[s] || { n: 0, a: 0, c: 0, pts: 0, score: 0 };
+      secs[s].n++;
+      var ch = q.getAttribute('data-chosen');
+      if (ch) { answered++; secs[s].a++; }
+      var revealed = q.classList.contains('done');
+      if (revealed && ch === q.getAttribute('data-a')) { correct++; secs[s].c++; secs[s].score += pts; }
+      secs[s].pts += pts;
+    });
+    var revealedAny = qs.some(function (q) { return q.classList.contains('done'); });
+    $('stats').textContent = '已作答 ' + answered + '／' + qs.length + (revealedAny ? '　答對 ' + correct : '');
+    Array.prototype.forEach.call(document.querySelectorAll('.sec-score'), function (el) {
+      var d = secs[el.getAttribute('data-sec')];
+      if (!d) return;
+      var txt = '本單元已作答 ' + d.a + '／' + d.n + ' 題';
+      var allRevealed = qs.filter(function (q) { return q.getAttribute('data-sec') === el.getAttribute('data-sec'); })
+        .every(function (q) { return q.classList.contains('done'); });
+      if (d.c > 0 || allRevealed || (mode === 'practice' && d.a > 0)) txt += '，答對 ' + d.c + ' 題，得分 ' + d.score + '／' + d.pts;
+      el.textContent = txt;
+    });
+  }
+
+  function reset() {
+    submitted = false;
+    qs.forEach(function (q) {
+      q.removeAttribute('data-chosen'); q.classList.remove('done');
+      q.querySelector('.exp').hidden = true;
+      Array.prototype.forEach.call(q.querySelectorAll('button.opt'), function (b) {
+        b.classList.remove('sel', 'right', 'wrong'); b.removeAttribute('aria-disabled');
+        b.querySelector('.mark').textContent = '';
+      });
+    });
+    stats();
+  }
+
+  function setMode(m) {
+    if (m === mode) return;
+    var any = qs.some(function (q) { return q.getAttribute('data-chosen'); });
+    if (any && !window.confirm('切換模式會清除目前的作答，要繼續嗎？')) return;
+    mode = m;
+    $('m-practice').classList.toggle('on', m === 'practice');
+    $('m-test').classList.toggle('on', m === 'test');
+    $('m-practice').setAttribute('aria-pressed', m === 'practice');
+    $('m-test').setAttribute('aria-pressed', m === 'test');
+    $('submit').hidden = m !== 'test';
+    reset();
+  }
+
+  qs.forEach(function (q) {
+    Array.prototype.forEach.call(q.querySelectorAll('button.opt'), function (b) {
+      b.addEventListener('click', function () {
+        if (q.classList.contains('done')) return;
+        q.setAttribute('data-chosen', b.getAttribute('data-k'));
+        if (mode === 'practice') { reveal(q); }
+        else {
+          Array.prototype.forEach.call(q.querySelectorAll('button.opt'), function (o) { o.classList.toggle('sel', o === b); });
+        }
+        stats();
+      });
+    });
+  });
+
+  $('m-practice').addEventListener('click', function () { setMode('practice'); });
+  $('m-test').addEventListener('click', function () { setMode('test'); });
+  $('reset').addEventListener('click', function () {
+    var any = qs.some(function (q) { return q.getAttribute('data-chosen'); });
+    if (!any || window.confirm('要清除目前的作答，重新開始嗎？')) reset();
+  });
+  $('submit').addEventListener('click', function () {
+    var left = qs.filter(function (q) { return !q.getAttribute('data-chosen'); }).length;
+    if (left > 0 && !window.confirm('還有 ' + left + ' 題沒作答，確定要交卷嗎？')) return;
+    submitted = true;
+    qs.forEach(function (q) { if (!q.classList.contains('done')) reveal(q); });
+    stats();
+    var first = document.querySelector('li.q .exp.no');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  stats();
+})();
+
+</script>
+</body>
+</html>
